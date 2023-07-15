@@ -1,6 +1,8 @@
 package com.dmdev.junit.service;
 
 import com.dmdev.junit.dto.User;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.collection.IsMapContaining;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 
@@ -37,6 +40,8 @@ public class UserServiceTest {
         List<User> users = userService.getAll();
         assertThat(users).hasSize(2);
 //        assertTrue(users.isEmpty(), () -> "User list should be empty"); //  input ->  [box == function] -> actual output
+
+        MatcherAssert.assertThat(users, empty());
     }
 
     @Test
@@ -68,6 +73,7 @@ public class UserServiceTest {
                 () -> assertThat(users).containsKeys(IVAN.getId(), PETR.getId()),
                 () -> assertThat(users).containsValues(IVAN, PETR)
         );
+        MatcherAssert.assertThat(users, IsMapContaining.hasKey(IVAN.getId()));
     }
 
     @Test
