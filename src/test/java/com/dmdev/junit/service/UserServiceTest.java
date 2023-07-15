@@ -11,7 +11,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 //@TestInstance(TestInstance.Lifecycle.PER_METHOD) // default lifecycle!
@@ -63,6 +63,21 @@ public class UserServiceTest {
         assertThat(maybeUser).isPresent();
 //        maybeUser.ifPresent(user -> assertEquals(IVAN, user));
         maybeUser.ifPresent(user -> assertThat(IVAN).isEqualTo(user));
+    }
+
+    @Test
+    void throwExceptionIfUsernameOrPasswordIsNull() {
+//        try {
+//            userService.login(null, "dummy");
+//            fail("login should throw exception on null username");
+//        } catch (IllegalArgumentException ex) {
+//            assertTrue(true);
+//        }
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, () -> userService.login(null, "dummy")),
+                () -> assertThrows(IllegalArgumentException.class, () -> userService.login("dummy", null))
+        );
+
     }
 
     @Test
