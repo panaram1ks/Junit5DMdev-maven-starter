@@ -15,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 //@TestInstance(TestInstance.Lifecycle.PER_METHOD) // default lifecycle!
+@Tag("fast")
+@Tag("user")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserServiceTest {
 
@@ -56,6 +58,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @Tag("login")
     void loginSuccessIfUserExist() {
         userService.add(IVAN);
         Optional<User> maybeUser = userService.login(IVAN.getUsername(), IVAN.getPassword());
@@ -66,6 +69,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @Tag("login")
     void throwExceptionIfUsernameOrPasswordIsNull() {
 //        try {
 //            userService.login(null, "dummy");
@@ -92,6 +96,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @Tag("login")
     void loginFailIfPasswordIsNotCorrect() {
         userService.add(IVAN);
         Optional<User> maybeUser = userService.login(IVAN.getUsername(), "dummy");
@@ -100,6 +105,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @Tag("login")
     void loginFailIfUserDoesNotExist() {
         userService.add(IVAN);
         Optional<User> maybeUser = userService.login("dummy", "anyPassword");
@@ -118,3 +124,6 @@ public class UserServiceTest {
         System.out.println("After All: ");
     }
 }
+
+// mvn clean test -Dgroups=login
+// mvn clean test -Dgroups=fast
