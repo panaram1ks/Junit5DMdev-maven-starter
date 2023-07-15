@@ -1,12 +1,18 @@
 package com.dmdev.junit.service;
 
-import org.junit.jupiter.api.Assertions;
+import com.dmdev.junit.dto.User;
 import org.junit.jupiter.api.Test;
 
-public class UserServiceTest {
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+class UserServiceTest {
 
     @Test
-    void test() {
-        Assertions.assertTrue(false);
+    void usersEmptyIfNoUserAdded() {
+        var userService = new UserService();
+        List<User> users = userService.getAll();
+        assertFalse(users.isEmpty(), () -> "User list should be empty"); //  input ->  [box == function] -> actual output
     }
 }
