@@ -131,23 +131,23 @@ public class UserServiceTest {
             assertThat(maybeUser).isEmpty();
         }
 
-        @ParameterizedTest
+        @ParameterizedTest(name = "{arguments} test")
 //        @ArgumentsSource()
 //        @NullSource
 //        @EmptySource
 //        @NullAndEmptySource
 //        @ValueSource(strings = {"Ivan", "Petr"})
 //        @EmptySource
-//        @MethodSource("com.dmdev.junit.service.UserServiceTest#getArgumentsForLoginTest")
-        @CsvFileSource(resources = "/login-test-data.csv", delimiter = ',', numLinesToSkip = 1)
+        @MethodSource("com.dmdev.junit.service.UserServiceTest#getArgumentsForLoginTest")
+//        @CsvFileSource(resources = "/login-test-data.csv", delimiter = ',', numLinesToSkip = 1)
 //        @CsvSource({
 //                "Ivan,123",
 //                "Petr,111"
 //        })
-        void loginParametrizedTest(String username, String password/*, Optional<User> user*/) {
+        void loginParametrizedTest(String username, String password, Optional<User> user) {
             userService.add(IVAN, PETR);
             Optional<User> maybeUser = userService.login(username, password);
-            assertThat(maybeUser).isEqualTo(null);
+            assertThat(maybeUser).isEqualTo(user);
         }
 
     }
