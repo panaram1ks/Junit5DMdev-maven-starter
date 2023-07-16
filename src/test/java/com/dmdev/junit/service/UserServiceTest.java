@@ -130,7 +130,7 @@ public class UserServiceTest {
         @Test
         void checkLoginFunctionalityPerformance() {
             System.out.println(Thread.currentThread().getName());
-            Optional<User> maybeUser = assertTimeout(Duration.ofMillis(200), () -> {
+            Optional<User> maybeUser = assertTimeoutPreemptively(Duration.ofMillis(200), () -> {
                 Thread.sleep(10);
                 System.out.println(Thread.currentThread().getName());
                 return userService.login(IVAN.getUsername(), "dummy");
