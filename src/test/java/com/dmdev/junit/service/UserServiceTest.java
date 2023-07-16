@@ -1,7 +1,7 @@
 package com.dmdev.junit.service;
 
 import com.dmdev.junit.dto.User;
-import com.dmdev.junit.paramresolver.UserServiceParamResolver;
+import com.dmdev.junit.extention.*;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.collection.IsMapContaining;
 import org.junit.jupiter.api.*;
@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,11 @@ import static org.junit.jupiter.api.RepeatedTest.LONG_DISPLAY_NAME;
 //@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestMethodOrder(MethodOrderer.DisplayName.class)
 @ExtendWith({
-        UserServiceParamResolver.class
+        UserServiceParamResolver.class,
+//        GlobalExtension.class,
+        PostProcessingExtension.class,
+        ConditionalExtension.class,
+        ThrowableException.class
 })
 @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
 public class UserServiceTest {
@@ -58,7 +63,10 @@ public class UserServiceTest {
     @Test
     @Order(1)
     @DisplayName("Users will be empty if no users added")
-    void usersEmptyIfNoUserAdded() {
+    void usersEmptyIfNoUserAdded() throws IOException {
+        if(true){
+            throw new RuntimeException();
+        }
         System.out.println("Test 1: " + this.toString());
         List<User> users = userService.getAll();
 //        assertThat(users).hasSize(2);
@@ -123,7 +131,7 @@ public class UserServiceTest {
 
         @Test
         @RepeatedTest(value = 5, name = LONG_DISPLAY_NAME)
-        void loginFailIfPasswordIsNotCorrect(RepetitionInfo repetitionInfo) {
+        void loginFailIfPasswordIsNotCorrect() {
             userService.add(IVAN);
             Optional<User> maybeUser = userService.login(IVAN.getUsername(), "dummy");
             assertThat(maybeUser).isEmpty();
