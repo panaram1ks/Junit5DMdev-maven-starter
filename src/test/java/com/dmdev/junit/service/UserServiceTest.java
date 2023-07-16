@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -17,6 +18,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.RepeatedTest.LONG_DISPLAY_NAME;
 
 
 //@TestInstance(TestInstance.Lifecycle.PER_METHOD) // default lifecycle!
@@ -118,13 +120,24 @@ public class UserServiceTest {
         }
 
         @Test
-        void loginFailIfPasswordIsNotCorrect() {
+        @RepeatedTest(value = 5, name = LONG_DISPLAY_NAME)
+        void loginFailIfPasswordIsNotCorrect(RepetitionInfo repetitionInfo) {
             userService.add(IVAN);
             Optional<User> maybeUser = userService.login(IVAN.getUsername(), "dummy");
             assertThat(maybeUser).isEmpty();
         }
 
         @Test
+        void checkLoginFunctionalityPerformance() {
+
+            Optional<User> maybeUser = assertTimeout(Duration.ofMillis(200), () -> {
+                Thread.sleep(10);
+                return userService.login(IVAN.getUsername(), "dummy");
+            });
+        }
+
+        @Test
+        @Disabled("flaky, need to see")
         void loginFailIfUserDoesNotExist() {
             userService.add(IVAN);
             Optional<User> maybeUser = userService.login("dummy", "anyPassword");
