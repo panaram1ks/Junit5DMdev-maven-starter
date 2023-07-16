@@ -13,6 +13,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,6 +31,7 @@ import static org.junit.jupiter.api.RepeatedTest.LONG_DISPLAY_NAME;
 @ExtendWith({
         UserServiceParamResolver.class
 })
+@Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
 public class UserServiceTest {
 
     private static final User IVAN = User.of(1, "Ivan", "123");
@@ -128,6 +130,7 @@ public class UserServiceTest {
         }
 
         @Test
+//        @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
         void checkLoginFunctionalityPerformance() {
             System.out.println(Thread.currentThread().getName());
             Optional<User> maybeUser = assertTimeoutPreemptively(Duration.ofMillis(200), () -> {
