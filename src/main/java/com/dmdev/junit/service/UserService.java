@@ -18,7 +18,8 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public boolean delete(Integer userId){
+    public boolean delete(Integer userId) {
+        Integer userIdLocal = 25;
         return userDao.delete(userId);
     }
 
