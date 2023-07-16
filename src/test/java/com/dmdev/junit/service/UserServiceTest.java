@@ -8,6 +8,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
+import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -132,6 +133,7 @@ public class UserServiceTest {
         @Test
         @RepeatedTest(value = 5, name = LONG_DISPLAY_NAME)
         void loginFailIfPasswordIsNotCorrect() {
+
             userService.add(IVAN);
             Optional<User> maybeUser = userService.login(IVAN.getUsername(), "dummy");
             assertThat(maybeUser).isEmpty();
