@@ -18,6 +18,6 @@ public class UserServiceParamResolver implements ParameterResolver {
 //        return new UserService();
 
         ExtensionContext.Store store = extensionContext.getStore(ExtensionContext.Namespace.create(UserService.class));
-        return store.getOrComputeIfAbsent(UserService.class, keyClazz -> new UserService());
+        return store.getOrComputeIfAbsent(UserService.class, keyClazz -> new UserService(null));
     }
 }

@@ -1,5 +1,6 @@
 package com.dmdev.junit.service;
 
+import com.dmdev.junit.dao.UserDao;
 import com.dmdev.junit.dto.User;
 import com.dmdev.junit.extention.*;
 import org.hamcrest.MatcherAssert;
@@ -35,7 +36,7 @@ import static org.junit.jupiter.api.RepeatedTest.LONG_DISPLAY_NAME;
 //        GlobalExtension.class,
         PostProcessingExtension.class,
         ConditionalExtension.class,
-        ThrowableException.class
+//        ThrowableException.class
 })
 @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
 public class UserServiceTest {
@@ -43,6 +44,7 @@ public class UserServiceTest {
     private static final User IVAN = User.of(1, "Ivan", "123");
     private static final User PETR = User.of(2, "Petr", "111");
 
+    private UserDao userDao;
     private UserService userService;
 
     UserServiceTest(TestInfo testInfo) {
@@ -56,16 +58,37 @@ public class UserServiceTest {
     }
 
     @BeforeEach
-    void prepare(UserService userService) {
+    void prepare() {
         System.out.println("Before each: " + this.toString());
-        this.userService = userService;
+        this.userDao = Mockito.mock(UserDao.class);
+        this.userService = new UserService(userDao);
+    }
+
+    @Test
+    void shouldDeleteExistedUser() {
+        userService.add(IVAN);
+//        Mockito.doReturn(true).when(userDao).delete(IVAN.getId());
+
+        Mockito.when(userDao.delete(IVAN.getId()))
+                .thenReturn(true)
+                .thenReturn(false);
+        boolean deleteResult = userService.delete(IVAN.getId());
+        System.out.println(deleteResult);
+        System.out.println(userService.delete(IVAN.getId()));
+        System.out.println(userService.delete(IVAN.getId()));
+
+//        Mockito.doReturn(true).when(userDao).delete(Mockito.any());
+//        boolean delete = userService.delete(IVAN.getId());
+//        boolean delete2 = userService.delete(2);
+//        assertThat(delete).isTrue();
+//        assertThat(delete2).isTrue();
     }
 
     @Test
     @Order(1)
     @DisplayName("Users will be empty if no users added")
     void usersEmptyIfNoUserAdded() throws IOException {
-        if(true){
+        if (true) {
             throw new RuntimeException();
         }
         System.out.println("Test 1: " + this.toString());
