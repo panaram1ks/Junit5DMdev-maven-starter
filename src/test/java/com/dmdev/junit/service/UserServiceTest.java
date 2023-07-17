@@ -11,6 +11,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -38,6 +39,7 @@ import static org.junit.jupiter.api.RepeatedTest.LONG_DISPLAY_NAME;
         PostProcessingExtension.class,
         ConditionalExtension.class,
 //        ThrowableException.class
+        MockitoExtension.class
 })
 @Timeout(value = 200, unit = TimeUnit.MILLISECONDS)
 public class UserServiceTest {
